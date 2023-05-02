@@ -19,6 +19,10 @@ spec:
         image: '{{.Values.microservices.meanservice.dockerImage}}'
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 500Mi    
         env:
         - name: '{{.Values.microservices.meanservice.envs.MYSQL_DATABASE.name}}'
           valueFrom:
