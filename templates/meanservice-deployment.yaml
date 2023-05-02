@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '{{.Values.microservices.meanservice.serviceName}}'
+  labels:
+    app: '{{.Values.microservices.meanservice.serviceName}}'
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: '{{.Values.microservices.meanservice.serviceName}}'
+  template:
+    metadata:
+      labels:
+        app: '{{.Values.microservices.meanservice.serviceName}}'
+    spec:
+      containers:
+      - name: '{{.Values.microservices.meanservice.serviceName}}'
+        image: '{{.Values.microservices.meanservice.dockerImage}}'
+        ports:
+        - containerPort: 8080
+        env:
+        - name: '{{.Values.microservices.meanservice.envs.MYSQL_DATABASE.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.meanservice.serviceName}}'
+              key: '{{.Values.microservices.meanservice.envs.MYSQL_DATABASE.name}}'
+        - name: '{{.Values.microservices.meanservice.envs.DB_HOST.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.meanservice.serviceName}}'
+              key: '{{.Values.microservices.meanservice.envs.DB_HOST.name}}'
+        - name: '{{.Values.microservices.meanservice.envs.DB_USERNAME.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.meanservice.serviceName}}'
+              key: '{{.Values.microservices.meanservice.envs.DB_USERNAME.name}}'
+        - name: '{{.Values.microservices.meanservice.envs.DB_PASSWORD.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.meanservice.serviceName}}'
+              key: '{{.Values.microservices.meanservice.envs.DB_PASSWORD.name}}'
+        - name: '{{.Values.microservices.meanservice.envs.MYSQL_ROOT_PASSWORD.name}}'
+          valueFrom:
+            configMapKeyRef:
+              name: '{{.Values.microservices.meanservice.serviceName}}'
+              key: '{{.Values.microservices.meanservice.envs.MYSQL_ROOT_PASSWORD.name}}'
